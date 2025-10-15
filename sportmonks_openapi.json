@@ -1,0 +1,235 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Sportmonks Football API (v3)",
+    "version": "1.0.0",
+    "description": "Esquema OpenAPI compatible con GPT Builder para la API de Sportmonks Football v3. Permite acceder a datos de ligas, equipos, jugadores, fixtures, estadísticas y cuotas pre-match."
+  },
+  "servers": [
+    {
+      "url": "https://api.sportmonks.com/v3/football",
+      "description": "Servidor principal de Sportmonks Football API v3"
+    }
+  ],
+  "paths": {
+    "/leagues": {
+      "get": {
+        "summary": "Obtener todas las ligas activas disponibles",
+        "operationId": "getLeagues",
+        "parameters": [
+          {
+            "name": "api_token",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": "VdBxgQbZAKTX0azKu8noJRsE1ipb3z3vT4ivcIBXkJ3lmKu5G0YDlr2vkgWX"
+          },
+          {
+            "name": "filter[active]",
+            "in": "query",
+            "schema": { "type": "boolean" },
+            "example": true
+          },
+          {
+            "name": "filter[type]",
+            "in": "query",
+            "schema": { "type": "string" },
+            "example": "league"
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "schema": { "type": "string" },
+            "example": "country"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": { "type": "integer" },
+            "example": 50
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de ligas obtenida correctamente"
+          }
+        }
+      }
+    },
+    "/teams": {
+      "get": {
+        "summary": "Obtener equipos activos por liga o país",
+        "operationId": "getTeams",
+        "parameters": [
+          {
+            "name": "api_token",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "filter[leagueIds]",
+            "in": "query",
+            "schema": { "type": "string" },
+            "example": "564"
+          },
+          {
+            "name": "filter[countryIds]",
+            "in": "query",
+            "schema": { "type": "string" },
+            "example": "32"
+          },
+          {
+            "name": "filter[active]",
+            "in": "query",
+            "schema": { "type": "boolean" },
+            "example": true
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "schema": { "type": "string" },
+            "example": "country;venue"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de equipos obtenida correctamente"
+          }
+        }
+      }
+    },
+    "/fixtures": {
+      "get": {
+        "summary": "Obtener partidos (fixtures) filtrados por liga, equipo o temporada",
+        "operationId": "getFixtures",
+        "parameters": [
+          {
+            "name": "api_token",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "filter[leagueIds]",
+            "in": "query",
+            "schema": { "type": "string" },
+            "example": "564"
+          },
+          {
+            "name": "filter[teamIds]",
+            "in": "query",
+            "schema": { "type": "string" },
+            "example": "541"
+          },
+          {
+            "name": "filter[states]",
+            "in": "query",
+            "schema": { "type": "string" },
+            "example": "upcoming"
+          },
+          {
+            "name": "filter[seasonIds]",
+            "in": "query",
+            "schema": { "type": "string" },
+            "example": "22095"
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "schema": { "type": "string" },
+            "example": "participants;venue;statistics"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fixtures obtenidos correctamente"
+          }
+        }
+      }
+    },
+    "/players": {
+      "get": {
+        "summary": "Obtener jugadores de un equipo específico",
+        "operationId": "getPlayers",
+        "parameters": [
+          {
+            "name": "api_token",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "filter[teamIds]",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": "541"
+          },
+          {
+            "name": "filter[seasonIds]",
+            "in": "query",
+            "schema": { "type": "string" },
+            "example": "22095"
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "schema": { "type": "string" },
+            "example": "teams;country;position;statistics"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de jugadores obtenida correctamente"
+          }
+        }
+      }
+    },
+    "/odds/pre-match/fixtures/{fixture_id}": {
+      "get": {
+        "summary": "Obtener cuotas pre-match de un fixture específico",
+        "operationId": "getFixtureOdds",
+        "parameters": [
+          {
+            "name": "fixture_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 123456
+          },
+          {
+            "name": "api_token",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "bookmakerId",
+            "in": "query",
+            "schema": { "type": "integer" },
+            "example": 2
+          },
+          {
+            "name": "marketId",
+            "in": "query",
+            "schema": { "type": "integer" },
+            "example": 1
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "schema": { "type": "string" },
+            "example": "markets;bookmaker;fixture"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cuotas pre-match obtenidas correctamente"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}
