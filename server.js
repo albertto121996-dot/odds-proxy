@@ -8,8 +8,8 @@ app.use(cors());
 const PORT = process.env.PORT || 10000;
 
 // === TOKENS ===
-const SPORTMONKS_TOKEN = "TU_TOKEN_DE_SPORTMONKS_AQUI";
-const THEODDSAPI_KEY = "TU_API_KEY_DE_THEODDSAPI_AQUI";
+const SPORTMONKS_TOKEN = "zrlNicn21i4azcgPphWrdBjghdL8HVXoi5iFU7X3fwSJs1oOyxtbdjedHXBx";
+const THEODDSAPI_KEY = "5c348e9913d2e80f48fcd8d78a6d000e";
 
 // === 1️⃣ Endpoint base de test ===
 app.get("/", (req, res) => {
