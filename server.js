@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 
 // 🔑 Coloca aquí tu token de TheOddsAPI
-const ODDS_API_KEY = "TU_TOKEN_DE_THEODDSAPI"; // ⬅️ Sustituye por tu token real
+const ODDS_API_KEY = "5c348e9913d2e80f48fcd8d78a6d000e"; // ⬅️ Sustituye por tu token real
 
 // ✅ Endpoint: cuotas puras (igual que antes)
 app.get("/api/odds", async (req, res) => {
