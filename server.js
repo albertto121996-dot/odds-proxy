@@ -1,12 +1,10 @@
 import express from "express";
 import axios from "axios";
-import dotenv from "dotenv";
 
-dotenv.config();
 const app = express();
 app.use(express.json());
 
-// ✅ SPORTMONKS - Obtener fixtures (partidos)
+// ✅ SPORTMONKS - Obtener fixtures
 app.post("/api/sportmonks/getFixtures", async (req, res) => {
   try {
     const { "filter[leagueIds]": leagueId, "filter[states]": state } = req.body;
@@ -16,7 +14,7 @@ app.post("/api/sportmonks/getFixtures", async (req, res) => {
         "filter[leagueIds]": leagueId,
         "filter[states]": state || "upcoming",
         "include": "participants;venue;statistics",
-        "api_token": process.env.SPORTMONKS_TOKEN
+        "api_token": process.env.SPORTMONKS_TOKEN // <-- Se obtiene del entorno Render
       }
     });
 
@@ -34,7 +32,7 @@ app.get("/api/odds", async (req, res) => {
 
     const response = await axios.get(`https://api.the-odds-api.com/v4/sports/${sport_key}/odds/`, {
       params: {
-        apiKey: process.env.ODDS_API_KEY,
+        apiKey: process.env.ODDS_API_KEY, // <-- Se obtiene del entorno Render
         regions: regions || "eu",
         markets: markets || "h2h",
         oddsFormat: oddsFormat || "decimal"
@@ -48,12 +46,12 @@ app.get("/api/odds", async (req, res) => {
   }
 });
 
-// ✅ ANALYSIS - Cálculo de Value Bets (ejemplo base)
+// ✅ ANALYSIS - Cálculo de Value Bets (ejemplo básico)
 app.post("/analyze/value", async (req, res) => {
   try {
     const { fixture_id, sport_key, home_team, away_team } = req.body;
 
-    // ⚙️ Aquí puedes combinar datos de ambas APIs en el futuro
+    // ⚙️ Ejemplo base de respuesta simulada
     res.json({
       home_value: 6.4,
       draw_value: 1.1,
@@ -64,6 +62,11 @@ app.post("/analyze/value", async (req, res) => {
     console.error("❌ Error Analyze:", err.message);
     res.status(500).json({ error: err.message });
   }
+});
+
+// ✅ Mensaje de estado del proxy
+app.get("/", (req, res) => {
+  res.send("✅ Proxy activo: SportMonks + TheOddsAPI funcionando correctamente (Render Environment).");
 });
 
 const PORT = process.env.PORT || 3000;
