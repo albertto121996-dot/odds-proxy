@@ -1,28 +1,33 @@
 {
-  "name": "odds-proxy",
-  "version": "1.0.0",
-  "description": "Proxy unificado para TheOddsAPI y SportMonks Football v3, compatible con GPT Builder.",
+  "name": "gpt-odds-sportmonks-proxy",
+  "version": "2.0.0",
+  "description": "Servidor Render para GPT personalizado con conexión a TheOddsAPI y SportMonks",
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "dependencies": {
-    "express": "^4.19.2",
     "cors": "^2.8.5",
+    "express": "^4.19.2",
     "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   },
   "engines": {
     "node": ">=18.x"
   },
   "keywords": [
     "proxy",
-    "football",
     "sportmonks",
     "theoddsapi",
-    "api",
-    "gpt"
+    "football",
+    "render",
+    "gpt",
+    "value-bets"
   ],
-  "author": "Alberto",
+  "author": "Analista de Apuestas Pro",
   "license": "MIT"
 }
