@@ -1,59 +1,60 @@
 import express from "express";
-import axios from "axios";
+import fetch from "node-fetch";
 import cors from "cors";
 
 const app = express();
 app.use(cors());
 
-// Tokens (añade tus API keys)
-const SPORTMONKS_TOKEN = "VdBxgQbZAKTX0azKu8noJRsE1ipb3z3vT4ivcIBXkJ3lmKu5G0YDlr2vkgWX";
-const ODDS_API_KEY = "5c348e9913d2e80f48fcd8d78a6d000e"; // <-- reemplázalo por el tuyo
+const PORT = process.env.PORT || 10000;
 
-// Base URLs
-const SPORTMONKS_BASE = "https://api.sportmonks.com/v3/football";
-const ODDS_BASE = "https://api.the-odds-api.com/v4";
+// === TOKENS ===
+const SPORTMONKS_TOKEN = "TU_TOKEN_DE_SPORTMONKS_AQUI";
+const THEODDSAPI_KEY = "TU_API_KEY_DE_THEODDSAPI_AQUI";
 
-// Ruta principal
+// === 1️⃣ Endpoint base de test ===
 app.get("/", (req, res) => {
   res.send("✅ Proxy activo: SportMonks + TheOddsAPI funcionando correctamente.");
 });
 
-// SPORTMONKS ENDPOINT
-app.get("/sportmonks/:endpoint(*)", async (req, res) => {
+// === 2️⃣ Rutas SPORTMONKS ===
+app.use("/sportmonks", async (req, res) => {
+  const targetUrl = `https://api.sportmonks.com/v3/football${req.url}${
+    req.url.includes("?") ? "&" : "?"
+  }api_token=${SPORTMONKS_TOKEN}`;
+
   try {
-    const { endpoint } = req.params;
-    const query = new URLSearchParams(req.query);
-    query.append("api_token", SPORTMONKS_TOKEN);
-
-    const url = `${SPORTMONKS_BASE}/${endpoint}?${query.toString()}`;
-    console.log("➡️ SportMonks:", url);
-
-    const response = await axios.get(url);
-    res.json(response.data);
+    const response = await fetch(targetUrl);
+    const data = await response.json();
+    res.json(data);
   } catch (error) {
-    console.error("❌ Error en SportMonks:", error.message);
-    res.status(500).json({ error: "Error con SportMonks", details: error.message });
+    res.status(500).json({
+      error: "Error al conectar con SportMonks",
+      details: error.message,
+    });
   }
 });
 
-// THEODDSAPI ENDPOINT
-app.get("/theoddsapi/:endpoint(*)", async (req, res) => {
+// === 3️⃣ Rutas THEODDSAPI ===
+app.use("/theoddsapi", async (req, res) => {
+  // Elimina la parte '/theoddsapi' y redirige a la API oficial
+  const cleanPath = req.url.replace(/^\/theoddsapi/, "");
+  const targetUrl = `https://api.the-odds-api.com/v4${cleanPath}${
+    req.url.includes("?") ? "&" : "?"
+  }apiKey=${THEODDSAPI_KEY}`;
+
   try {
-    const { endpoint } = req.params;
-    const query = new URLSearchParams(req.query);
-    query.append("apiKey", ODDS_API_KEY);
-
-    const url = `${ODDS_BASE}/${endpoint}?${query.toString()}`;
-    console.log("➡️ TheOddsAPI:", url);
-
-    const response = await axios.get(url);
-    res.json(response.data);
+    const response = await fetch(targetUrl);
+    const data = await response.json();
+    res.json(data);
   } catch (error) {
-    console.error("❌ Error en TheOddsAPI:", error.message);
-    res.status(500).json({ error: "Error con TheOddsAPI", details: error.message });
+    res.status(500).json({
+      error: "Error al conectar con TheOddsAPI",
+      details: error.message,
+    });
   }
 });
 
-// Puerto
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Proxy ejecutándose en el puerto ${PORT}`));
+// === 4️⃣ Inicio del servidor ===
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor proxy corriendo en el puerto ${PORT}`);
+});
