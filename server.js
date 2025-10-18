@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 // 🔑 Clave directa de TheOddsAPI (puedes dejarla fija aquí)
-const ODDS_API_KEY = "TU_TOKEN_DE_THEODDSAPI"; // <--- Sustituye por tu token real
+const ODDS_API_KEY = "5c348e9913d2e80f48fcd8d78a6d000e"; // <--- Sustituye por tu token real
 
 // 🌍 Regiones con prioridad (fallback automático)
 const REGIONS = ["eu", "uk", "us"];
